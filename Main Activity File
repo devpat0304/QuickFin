@@ -31,7 +31,8 @@ class MainActivity : ComponentActivity() {
             "Mortgage Calculator",
             "Currency Converter",
             "Discount Calculator",
-            "Savings Advisor"
+            "Savings Advisor",
+            "Investment Return Calculator"  // New button
         )
 
         setContent {
@@ -66,6 +67,7 @@ class MainActivity : ComponentActivity() {
                                     when (item) {
                                         "Tip Calculator" -> startActivity(Intent(this@MainActivity, TipCalculatorActivity::class.java))
                                         "Currency Converter" -> startActivity(Intent(this@MainActivity, CurrencyConverterActivity::class.java))
+                                        "Investment Return Calculator" -> startActivity(Intent(this@MainActivity, InvestmentReturnCalculatorActivity::class.java))
                                         // Add navigation for other buttons if needed
                                     }
                                 }
@@ -96,7 +98,7 @@ class TipCalculatorActivity : ComponentActivity() {
 fun TipCalculatorScreen() {
     var billAmount by remember { mutableStateOf("") }
     var tipPercentage by remember { mutableStateOf("") }
-    val tipAmount: Double = (billAmount.toDoubleOrNull() ?: 0.0) * (tipPercentage.toDoubleOrNull() ?: 0.0) / 100
+    var tipAmount by remember { mutableStateOf(0.0) }
 
     Column(
         modifier = Modifier
@@ -118,6 +120,17 @@ fun TipCalculatorScreen() {
             label = { Text("Enter Tip Percentage") },
             modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                tipAmount = (billAmount.toDoubleOrNull() ?: 0.0) * (tipPercentage.toDoubleOrNull() ?: 0.0) / 100
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Calculate")
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -173,6 +186,82 @@ fun CurrencyConverterScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(text = "Converted Amount: $${"%.2f".format(convertedAmount)}")
+    }
+}
+
+class InvestmentReturnCalculatorActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            RSSReaderTheme {
+                Scaffold {
+                    InvestmentReturnCalculatorScreen()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun InvestmentReturnCalculatorScreen() {
+    var initialInvestment by remember { mutableStateOf("") }
+    var interestRate by remember { mutableStateOf("") }
+    var years by remember { mutableStateOf("") }
+    var finalAmount by remember { mutableStateOf(0.0) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Text(text = "Investment Return Calculator", style = MaterialTheme.typography.headlineMedium)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = initialInvestment,
+            onValueChange = { initialInvestment = it },
+            label = { Text("Enter Initial Investment") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = interestRate,
+            onValueChange = { interestRate = it },
+            label = { Text("Enter Interest Rate (%)") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = years,
+            onValueChange = { years = it },
+            label = { Text("Enter Number of Years") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                // Calculate final investment amount with compound interest
+                val principal = initialInvestment.toDoubleOrNull() ?: 0.0
+                val rate = (interestRate.toDoubleOrNull() ?: 0.0) / 100
+                val time = years.toDoubleOrNull() ?: 0.0
+                finalAmount = principal * Math.pow(1 + rate, time)
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Calculate")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Final Amount: $${"%.2f".format(finalAmount)}")
     }
 }
 
