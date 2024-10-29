@@ -1,0 +1,207 @@
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.rssreader.ui.theme.RSSReaderTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        val people = listOf(
+            "Tip Calculator",
+            "Mortgage Calculator",
+            "Currency Converter",
+            "Discount Calculator",
+            "Savings Advisor"
+        )
+
+        setContent {
+            RSSReaderTheme {
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
+                    Column(
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .fillMaxSize()
+                    ) {
+                        // Title centered at the top with green color
+                        Text(
+                            text = "QuickFin",
+                            fontSize = 32.sp,
+                            color = Color.Green,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                                .align(Alignment.CenterHorizontally)
+                        )
+
+                        // List of clickable buttons
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(12.dp)
+                        ) {
+                            items(people) { item ->
+                                ListItem(name = item) {
+                                    // Handle button click and navigate to another activity
+                                    when (item) {
+                                        "Tip Calculator" -> startActivity(Intent(this@MainActivity, TipCalculatorActivity::class.java))
+                                        "Currency Converter" -> startActivity(Intent(this@MainActivity, CurrencyConverterActivity::class.java))
+                                        // Add navigation for other buttons if needed
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+class TipCalculatorActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            RSSReaderTheme {
+                Scaffold {
+                    TipCalculatorScreen()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun TipCalculatorScreen() {
+    var billAmount by remember { mutableStateOf("") }
+    var tipPercentage by remember { mutableStateOf("") }
+    val tipAmount: Double = (billAmount.toDoubleOrNull() ?: 0.0) * (tipPercentage.toDoubleOrNull() ?: 0.0) / 100
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        OutlinedTextField(
+            value = billAmount,
+            onValueChange = { billAmount = it },
+            label = { Text("Enter Bill Amount") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = tipPercentage,
+            onValueChange = { tipPercentage = it },
+            label = { Text("Enter Tip Percentage") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Tip Amount: $${"%.2f".format(tipAmount)}")
+    }
+}
+
+class CurrencyConverterActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            RSSReaderTheme {
+                Scaffold {
+                    CurrencyConverterScreen()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CurrencyConverterScreen() {
+    var amount by remember { mutableStateOf("") }
+    var conversionRate by remember { mutableStateOf("") }
+    val convertedAmount: Double = (amount.toDoubleOrNull() ?: 0.0) * (conversionRate.toDoubleOrNull() ?: 1.0)
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Text(text = "Currency Converter", style = MaterialTheme.typography.headlineMedium)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = amount,
+            onValueChange = { amount = it },
+            label = { Text("Enter Amount") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = conversionRate,
+            onValueChange = { conversionRate = it },
+            label = { Text("Enter Conversion Rate") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Converted Amount: $${"%.2f".format(convertedAmount)}")
+    }
+}
+
+@Composable
+fun ListItem(name: String, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp)
+            .clickable(onClick = onClick),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Text(
+            text = name,
+            modifier = Modifier.padding(24.dp)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    RSSReaderTheme {
+        Greeting("Android")
+    }
+}
+
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "",
+        modifier = modifier
+    )
+}
