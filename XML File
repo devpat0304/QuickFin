@@ -24,12 +24,11 @@
             </intent-filter>
         </activity>
 
-        <!-- Register TipCalculatorActivity -->
+        <!-- Register all activities -->
         <activity android:name=".TipCalculatorActivity" />
-
-        <!-- Register CurrencyConverterActivity -->
         <activity android:name=".CurrencyConverterActivity" />
+        <activity android:name=".DiscountCalculatorActivity" />
+        <activity android:name=".InvestmentReturnCalculatorActivity" />
 
     </application>
-
 </manifest>
