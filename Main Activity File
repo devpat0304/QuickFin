@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val people = listOf(
+        val features = listOf(
             "Tip Calculator",
             "Mortgage Calculator",
             "Currency Converter",
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                             contentPadding = PaddingValues(horizontal = 16.dp)
                         ) {
-                            items(people) { item ->
+                            items(features) { item ->
                                 ListItem(name = item) {
                                     when (item) {
                                         "Tip Calculator" -> startActivity(Intent(this@MainActivity, TipCalculatorActivity::class.java))
@@ -294,18 +294,20 @@ class InvestmentReturnCalculatorActivity : ComponentActivity() {
 @Composable
 fun InvestmentReturnCalculatorScreen() {
     var initialInvestment by remember { mutableStateOf("") }
-    var interestRate by remember { mutableStateOf("") }
-    var years by remember { mutableStateOf("") }
-    var finalAmount by remember { mutableStateOf(0.0) }
+    var annualReturnRate by remember { mutableStateOf("") }
+    var investmentDuration by remember { mutableStateOf("") }
+    var futureValue by remember { mutableStateOf(0.0) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(text = "Investment Return Calculator", style = MaterialTheme.typography.headlineMedium)
-
-        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "Investment Return Calculator",
+            fontSize = 24.sp,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
 
         OutlinedTextField(
             value = initialInvestment,
@@ -317,18 +319,18 @@ fun InvestmentReturnCalculatorScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = interestRate,
-            onValueChange = { interestRate = it },
-            label = { Text("Enter Interest Rate (%)") },
+            value = annualReturnRate,
+            onValueChange = { annualReturnRate = it },
+            label = { Text("Enter Annual Return Rate (%)") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = years,
-            onValueChange = { years = it },
-            label = { Text("Enter Number of Years") },
+            value = investmentDuration,
+            onValueChange = { investmentDuration = it },
+            label = { Text("Enter Investment Duration (Years)") },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -337,9 +339,9 @@ fun InvestmentReturnCalculatorScreen() {
         Button(
             onClick = {
                 val principal = initialInvestment.toDoubleOrNull() ?: 0.0
-                val rate = (interestRate.toDoubleOrNull() ?: 0.0) / 100
-                val time = years.toDoubleOrNull() ?: 0.0
-                finalAmount = principal * Math.pow(1 + rate, time)
+                val rate = (annualReturnRate.toDoubleOrNull() ?: 0.0) / 100
+                val time = investmentDuration.toDoubleOrNull() ?: 0.0
+                futureValue = principal * Math.pow(1 + rate, time)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -348,6 +350,6 @@ fun InvestmentReturnCalculatorScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Final Amount: $${"%.2f".format(finalAmount)}")
+        Text(text = "Future Value: $${"%.2f".format(futureValue)}")
     }
 }
