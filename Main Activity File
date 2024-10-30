@@ -63,6 +63,7 @@ class MainActivity : ComponentActivity() {
                                 ListItem(name = item) {
                                     when (item) {
                                         "Tip Calculator" -> startActivity(Intent(this@MainActivity, TipCalculatorActivity::class.java))
+                                        "Mortgage Calculator" -> startActivity(Intent(this@MainActivity, MortgageCalculatorActivity::class.java))
                                         "Currency Converter" -> startActivity(Intent(this@MainActivity, CurrencyConverterActivity::class.java))
                                         "Discount Calculator" -> startActivity(Intent(this@MainActivity, DiscountCalculatorActivity::class.java))
                                         "Investment Return Calculator" -> startActivity(Intent(this@MainActivity, InvestmentReturnCalculatorActivity::class.java))
@@ -150,6 +151,99 @@ fun TipCalculatorScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(text = "Tip Amount: $${"%.2f".format(tipAmount)}")
+    }
+}
+
+// Mortgage Calculator Activity
+class MortgageCalculatorActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            RSSReaderTheme {
+                Scaffold {
+                    MortgageCalculatorScreen()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MortgageCalculatorScreen() {
+    var loanAmount by remember { mutableStateOf("") }
+    var downPayment by remember { mutableStateOf("") }
+    var interestRate by remember { mutableStateOf("") }
+    var loanTerm by remember { mutableStateOf("") }
+    var monthlyPayment by remember { mutableStateOf(0.0) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Mortgage Calculator",
+            fontSize = 24.sp,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        OutlinedTextField(
+            value = loanAmount,
+            onValueChange = { loanAmount = it },
+            label = { Text("Enter Loan Amount") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = downPayment,
+            onValueChange = { downPayment = it },
+            label = { Text("Enter Down Payment") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = interestRate,
+            onValueChange = { interestRate = it },
+            label = { Text("Enter Annual Interest Rate (%)") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = loanTerm,
+            onValueChange = { loanTerm = it },
+            label = { Text("Enter Loan Term (Years)") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                val principal = (loanAmount.toDoubleOrNull() ?: 0.0) - (downPayment.toDoubleOrNull() ?: 0.0)
+                val annualRate = (interestRate.toDoubleOrNull() ?: 0.0) / 100
+                val monthlyRate = annualRate / 12
+                val months = (loanTerm.toDoubleOrNull() ?: 0.0) * 12
+                monthlyPayment = if (monthlyRate > 0) {
+                    (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1)
+                } else {
+                    principal / months
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Calculate")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Monthly Payment: $${"%.2f".format(monthlyPayment)}")
     }
 }
 
