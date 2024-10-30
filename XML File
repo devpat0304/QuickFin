@@ -13,6 +13,7 @@
         android:theme="@style/Theme.RSSReader"
         tools:targetApi="31">
 
+        <!-- MainActivity is the app's entry point -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -24,8 +25,9 @@
             </intent-filter>
         </activity>
 
-        <!-- Register all activities -->
+        <!-- Register all additional calculator activities -->
         <activity android:name=".TipCalculatorActivity" />
+        <activity android:name=".MortgageCalculatorActivity" />
         <activity android:name=".CurrencyConverterActivity" />
         <activity android:name=".DiscountCalculatorActivity" />
         <activity android:name=".InvestmentReturnCalculatorActivity" />
