@@ -67,6 +67,8 @@ class MainActivity : ComponentActivity() {
                                         "Currency Converter" -> startActivity(Intent(this@MainActivity, CurrencyConverterActivity::class.java))
                                         "Discount Calculator" -> startActivity(Intent(this@MainActivity, DiscountCalculatorActivity::class.java))
                                         "Investment Return Calculator" -> startActivity(Intent(this@MainActivity, InvestmentReturnCalculatorActivity::class.java))
+                                        "Savings Advisor" -> startActivity(Intent(this@MainActivity, SavingsAdvisorActivity::class.java))
+
                                     }
                                 }
                             }
@@ -264,9 +266,15 @@ class CurrencyConverterActivity : ComponentActivity() {
 
 @Composable
 fun CurrencyConverterScreen() {
+    val currencies = listOf(
+        "US Dollar", "Euros", "Pesos", "Rupee", "Pounds Sterling",
+        "Yuan", "Saudi Riyal", "Russian Ruble", "Japanese Yen", "UAE Dirham"
+    )
     var amount by remember { mutableStateOf("") }
     var conversionRate by remember { mutableStateOf("") }
-    val convertedAmount: Double = (amount.toDoubleOrNull() ?: 0.0) * (conversionRate.toDoubleOrNull() ?: 1.0)
+    var fromCurrency by remember { mutableStateOf(currencies[0]) }
+    var toCurrency by remember { mutableStateOf(currencies[1]) }
+    var convertedAmount by remember { mutableStateOf(0.0) }
 
     Column(
         modifier = Modifier
@@ -274,6 +282,20 @@ fun CurrencyConverterScreen() {
             .padding(16.dp)
     ) {
         Text(text = "Currency Converter", style = MaterialTheme.typography.headlineMedium)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "From")
+        DropdownMenu(selectedItem = fromCurrency, items = currencies) { selected ->
+            fromCurrency = selected
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "To")
+        DropdownMenu(selectedItem = toCurrency, items = currencies) { selected ->
+            toCurrency = selected
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -286,12 +308,16 @@ fun CurrencyConverterScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            value = conversionRate,
-            onValueChange = { conversionRate = it },
-            label = { Text("Enter Conversion Rate") },
+
+
+        Button(
+            onClick = {
+                convertedAmount = (amount.toDoubleOrNull() ?: 0.0) * (conversionRate.toDoubleOrNull() ?: 1.0)
+            },
             modifier = Modifier.fillMaxWidth()
-        )
+        ) {
+            Text("Convert")
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -299,77 +325,33 @@ fun CurrencyConverterScreen() {
     }
 }
 
-// Discount Calculator Activity
-class DiscountCalculatorActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            RSSReaderTheme {
-                Scaffold {
-                    DiscountCalculatorScreen()
-                }
+@Composable
+fun DropdownMenu(selectedItem: String, items: List<String>, onItemSelected: (String) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { expanded = true }
+            .padding(vertical = 8.dp)
+    ) {
+        Text(text = selectedItem, modifier = Modifier.padding(8.dp))
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            items.forEach { item ->
+                DropdownMenuItem(
+                    text = { Text(text = item) },
+                    onClick = {
+                        onItemSelected(item)
+                        expanded = false
+                    }
+                )
             }
         }
     }
 }
-
-@Composable
-fun DiscountCalculatorScreen() {
-    var originalPrice by remember { mutableStateOf("") }
-    var discountPercentage by remember { mutableStateOf("") }
-    var discountAmount by remember { mutableStateOf(0.0) }
-    var finalPrice by remember { mutableStateOf(0.0) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "Discount Calculator",
-            fontSize = 24.sp,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        OutlinedTextField(
-            value = originalPrice,
-            onValueChange = { originalPrice = it },
-            label = { Text("Enter Original Price") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = discountPercentage,
-            onValueChange = { discountPercentage = it },
-            label = { Text("Enter Discount Percentage") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                val price = originalPrice.toDoubleOrNull() ?: 0.0
-                val discount = discountPercentage.toDoubleOrNull() ?: 0.0
-                discountAmount = price * (discount / 100)
-                finalPrice = price - discountAmount
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Calculate")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(text = "Discount Amount: $${"%.2f".format(discountAmount)}")
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Final Price: $${"%.2f".format(finalPrice)}")
-    }
-}
-
 // Investment Return Calculator Activity
 class InvestmentReturnCalculatorActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -447,3 +429,153 @@ fun InvestmentReturnCalculatorScreen() {
         Text(text = "Future Value: $${"%.2f".format(futureValue)}")
     }
 }
+// Discount Calculator Activity
+class DiscountCalculatorActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            RSSReaderTheme {
+                Scaffold {
+                    DiscountCalculatorScreen()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DiscountCalculatorScreen() {
+    var originalPrice by remember { mutableStateOf("") }
+    var discountPercentage by remember { mutableStateOf("") }
+    var discountAmount by remember { mutableStateOf(0.0) }
+    var finalPrice by remember { mutableStateOf(0.0) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Discount Calculator",
+            fontSize = 24.sp,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        OutlinedTextField(
+            value = originalPrice,
+            onValueChange = { originalPrice = it },
+            label = { Text("Enter Original Price") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = discountPercentage,
+            onValueChange = { discountPercentage = it },
+            label = { Text("Enter Discount Percentage") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                val price = originalPrice.toDoubleOrNull() ?: 0.0
+                val discount = discountPercentage.toDoubleOrNull() ?: 0.0
+                discountAmount = price * (discount / 100)
+                finalPrice = price - discountAmount
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Calculate")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Discount Amount: $${"%.2f".format(discountAmount)}")
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "Final Price: $${"%.2f".format(finalPrice)}")
+    }
+}
+
+
+
+class SavingsAdvisorActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            RSSReaderTheme {
+                Scaffold {
+                    SavingsAdvisorScreen()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SavingsAdvisorScreen() {
+    var monthlyIncome by remember { mutableStateOf("") }
+    var monthlyExpenses by remember { mutableStateOf("") }
+    var targetSavings by remember { mutableStateOf("") }
+    var monthlySavingsGoal by remember { mutableStateOf(0.0) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Savings Advisor",
+            fontSize = 24.sp,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        OutlinedTextField(
+            value = monthlyIncome,
+            onValueChange = { monthlyIncome = it },
+            label = { Text("Enter Monthly Income") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = monthlyExpenses,
+            onValueChange = { monthlyExpenses = it },
+            label = { Text("Enter Monthly Expenses") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = targetSavings,
+            onValueChange = { targetSavings = it },
+            label = { Text("Enter Target Savings Amount") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                val income = monthlyIncome.toDoubleOrNull() ?: 0.0
+                val expenses = monthlyExpenses.toDoubleOrNull() ?: 0.0
+                val savings = targetSavings.toDoubleOrNull() ?: 0.0
+                monthlySavingsGoal = income - expenses - savings
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Calculate")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Monthly Savings Goal: $${"%.2f".format(monthlySavingsGoal)}")
+    }
+}
+
