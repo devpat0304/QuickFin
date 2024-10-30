@@ -31,6 +31,7 @@
         <activity android:name=".CurrencyConverterActivity" />
         <activity android:name=".DiscountCalculatorActivity" />
         <activity android:name=".InvestmentReturnCalculatorActivity" />
+        <activity android:name=".SavingsAdvisorActivity" />
 
     </application>
 </manifest>
