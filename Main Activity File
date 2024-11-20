@@ -290,6 +290,7 @@ fun ResultsCard(tipAmount: Double, totalAmount: Double) {
                     fontSize = 16.sp,
                     color = Color.Black
                 )
+
             )
         }
     }
