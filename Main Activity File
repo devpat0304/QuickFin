@@ -64,7 +64,8 @@ class MainActivity : ComponentActivity() {
                             text = "QuickFin",
                             fontSize = 32.sp,
                             color = Color.Green,
-                            fontFamily = FontFamily.Serif, // Use Serif font
+                            fontFamily = FontFamily.Serif,
+                                    // Use Serif font
                             fontWeight = FontWeight.Bold, // Make it bold
                             modifier = Modifier
                                 .padding(1.dp)
@@ -73,8 +74,8 @@ class MainActivity : ComponentActivity() {
                         // Display features in a list
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.spacedBy(1.dp),
-                            contentPadding = PaddingValues(horizontal = 12.dp)
+                            verticalArrangement = Arrangement.spacedBy(2.dp),
+                            contentPadding = PaddingValues(horizontal = 0.5.dp)
                         ) {
                             items(features) { item ->
                                 ListItem(name = item) {
@@ -106,11 +107,20 @@ fun ListItem(name: String, onClick: () -> Unit) {
             .clickable(onClick = onClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Text(
-            text = name,
-            modifier = Modifier.padding(24.dp),
-            fontSize = 18.sp
-        )
+        // Centering the text inside the card
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            contentAlignment = Alignment.Center // Center the text
+        ) {
+            Text(
+                text = name,
+                fontSize = 20.sp, // Change font size here
+                fontWeight = FontWeight.Bold, // Make the text bold (optional)
+                color = Color.Black // Set the color of the text
+            )
+        }
     }
 }
 
