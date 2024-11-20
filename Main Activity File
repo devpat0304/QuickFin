@@ -167,8 +167,9 @@ fun TipCalculatorScreen(modifier: Modifier = Modifier) {
     var tipAmount by remember { mutableStateOf(0.0) }
     var totalAmount by remember { mutableStateOf(0.0) }
     var customTipPercentage by remember { mutableStateOf("") }
-    var selectedTipPercentage by remember { mutableStateOf(0.0) } // Track selected box
+    var selectedTipPercentage by remember { mutableStateOf(0.0) }
     var generosityMessage by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -177,7 +178,6 @@ fun TipCalculatorScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Input Section
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -190,16 +190,28 @@ fun TipCalculatorScreen(modifier: Modifier = Modifier) {
                 value = billAmount,
                 onValueChange = { input ->
                     billAmount = input
+                    errorMessage = ""
                     generosityMessage = ""
                 },
                 label = { Text("Enter Bill Amount") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                isError = errorMessage.isNotEmpty()
             )
+
+            // Display error message if any
+            if (errorMessage.isNotEmpty()) {
+                Text(
+                    text = errorMessage,
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
 
             // Title: Select a Tip Percentage
             Text(
                 text = "Select a Tip Percentage",
-                fontSize = 20.sp, // Bigger font size
+                fontSize = 20.sp,
                 color = Color.Black,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
@@ -220,7 +232,7 @@ fun TipCalculatorScreen(modifier: Modifier = Modifier) {
                         subLabel = "Good",
                         percentage = 15,
                         billAmount = billAmount,
-                        isSelected = selectedTipPercentage == 15.0, // Highlight if selected
+                        isSelected = selectedTipPercentage == 15.0,
                         onTipSelected = { selectedTipPercentage = it }
                     )
                     TipBox(
@@ -228,7 +240,7 @@ fun TipCalculatorScreen(modifier: Modifier = Modifier) {
                         subLabel = "Great",
                         percentage = 18,
                         billAmount = billAmount,
-                        isSelected = selectedTipPercentage == 18.0, // Highlight if selected
+                        isSelected = selectedTipPercentage == 18.0,
                         onTipSelected = { selectedTipPercentage = it }
                     )
                 }
@@ -243,7 +255,7 @@ fun TipCalculatorScreen(modifier: Modifier = Modifier) {
                         subLabel = "Amazing",
                         percentage = 20,
                         billAmount = billAmount,
-                        isSelected = selectedTipPercentage == 20.0, // Highlight if selected
+                        isSelected = selectedTipPercentage == 20.0,
                         onTipSelected = { selectedTipPercentage = it }
                     )
                     CustomTipBox(
@@ -258,7 +270,19 @@ fun TipCalculatorScreen(modifier: Modifier = Modifier) {
             // Calculate Button
             Button(
                 onClick = {
-                    val bill = billAmount.toDoubleOrNull() ?: 0.0
+                    val bill = billAmount.toDoubleOrNull()
+                    if (bill == null || bill <= 0) {
+                        errorMessage = "Please enter a valid positive bill amount."
+                        tipAmount = 0.0
+                        totalAmount = 0.0
+                        return@Button
+                    }
+                    val customTip = customTipPercentage.toDoubleOrNull()
+                    if (selectedTipPercentage == 0.0 && (customTip == null || customTip <= 0)) {
+                        errorMessage = "Please select a valid tip percentage."
+                        return@Button
+                    }
+                    errorMessage = ""
                     tipAmount = bill * (selectedTipPercentage / 100)
                     totalAmount = bill + tipAmount
                     generosityMessage = if (selectedTipPercentage >= 20) {
@@ -271,7 +295,7 @@ fun TipCalculatorScreen(modifier: Modifier = Modifier) {
                     .fillMaxWidth()
                     .padding(top = 16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF4CAF50), // Green
+                    containerColor = Color(0xFF4CAF50),
                     contentColor = Color.White
                 )
             ) {
@@ -296,7 +320,7 @@ fun TipCalculatorScreen(modifier: Modifier = Modifier) {
 
         // App Logo at the Bottom
         Image(
-            painter = painterResource(id = R.drawable.icon), // Replace with your logo resource
+            painter = painterResource(id = R.drawable.icon),
             contentDescription = "App Logo",
             modifier = Modifier
                 .size(100.dp)
@@ -304,6 +328,7 @@ fun TipCalculatorScreen(modifier: Modifier = Modifier) {
         )
     }
 }
+
 
 @Composable
 fun TipBox(
