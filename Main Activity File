@@ -11,6 +11,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.rssreader.ui.theme.RSSReaderTheme
+
 import com.example.rssreader.R
 
 class MainActivity : ComponentActivity() {
@@ -133,14 +136,25 @@ fun ListItem(name: String, onClick: () -> Unit) {
 
 
 // Tip Calculator Activity
+@OptIn(ExperimentalMaterial3Api::class)
 class TipCalculatorActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             RSSReaderTheme {
-                Scaffold {
-                    TipCalculatorScreen()
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text("Tip Calculator") },
+                            navigationIcon = {
+                                IconButton(onClick = { finish() }) { // Go back to previous screen
+                                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                                }
+                            }
+                        )
+                    }
+                ) { innerPadding ->
+                    TipCalculatorScreen(Modifier.padding(innerPadding))
                 }
             }
         }
@@ -148,48 +162,139 @@ class TipCalculatorActivity : ComponentActivity() {
 }
 
 @Composable
-fun TipCalculatorScreen() {
+fun TipCalculatorScreen(modifier: Modifier = Modifier) {
     var billAmount by remember { mutableStateOf("") }
     var tipPercentage by remember { mutableStateOf("") }
     var tipAmount by remember { mutableStateOf(0.0) }
+    var totalAmount by remember { mutableStateOf(0.0) }
+    var errorMessage by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Input field: Bill Amount
         OutlinedTextField(
             value = billAmount,
-            onValueChange = { billAmount = it },
+            onValueChange = { input ->
+                billAmount = input
+                errorMessage = ""
+            },
             label = { Text("Enter Bill Amount") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            isError = errorMessage.isNotEmpty()
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
+        // Input field: Tip Percentage
         OutlinedTextField(
             value = tipPercentage,
-            onValueChange = { tipPercentage = it },
+            onValueChange = { input ->
+                tipPercentage = input
+                errorMessage = ""
+            },
             label = { Text("Enter Tip Percentage") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            isError = errorMessage.isNotEmpty()
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        // Error message (if any)
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                fontSize = 14.sp,
+                modifier = Modifier.align(Alignment.Start)
+            )
+        }
 
+        // Button: Calculate Tip
         Button(
             onClick = {
-                tipAmount = (billAmount.toDoubleOrNull() ?: 0.0) * (tipPercentage.toDoubleOrNull() ?: 0.0) / 100
+                val bill = billAmount.toDoubleOrNull()
+                val tip = tipPercentage.toDoubleOrNull()
+
+                if (bill == null || tip == null || bill < 0 || tip < 0) {
+                    errorMessage = "Please enter valid positive numbers"
+                } else {
+                    tipAmount = bill * (tip / 100)
+                    totalAmount = bill + tipAmount
+                    errorMessage = ""
+                }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF4CAF50), // Green background
+                contentColor = Color.White // White text
+            )
         ) {
             Text("Calculate")
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(text = "Tip Amount: $${"%.2f".format(tipAmount)}")
+        // Enhanced Results Display
+        if (tipAmount > 0 || totalAmount > 0) {
+            ResultsCard(tipAmount = tipAmount, totalAmount = totalAmount)
+        }
     }
 }
+
+@Composable
+fun ResultsCard(tipAmount: Double, totalAmount: Double) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            // Tip Amount
+            Text(
+                text = "Tip Amount",
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF4CAF50)
+                ),
+                fontSize = 18.sp
+            )
+            Text(
+                text = "$${"%.2f".format(tipAmount)}",
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 16.sp,
+                    color = Color.Black
+                )
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Total Amount
+            Text(
+                text = "Total Bill Amount",
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF2196F3)
+                ),
+                fontSize = 18.sp
+            )
+            Text(
+                text = "$${"%.2f".format(totalAmount)}",
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 16.sp,
+                    color = Color.Black
+                )
+            )
+        }
+    }
+}
+
 
 // Mortgage Calculator Activity
 class MortgageCalculatorActivity : ComponentActivity() {
