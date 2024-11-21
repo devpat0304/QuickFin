@@ -177,7 +177,13 @@ fun TipCalculatorScreen(modifier: Modifier = Modifier) {
             .padding(16.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    ) { Text(
+        text = "Tip Calculator",
+        color = Color(0xFF006400),
+        fontFamily = FontFamily.Cursive,
+        fontSize = 30.sp,
+        modifier = Modifier.padding(top = 20.dp)
+    )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -458,14 +464,25 @@ fun ResultsCard(tipAmount: Double, totalAmount: Double) {
 
 
 // Mortgage Calculator Activity
+@OptIn(ExperimentalMaterial3Api::class)
 class MortgageCalculatorActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             RSSReaderTheme {
-                Scaffold {
-                    MortgageCalculatorScreen()
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text("Mortgage Calculator") },
+                            navigationIcon = {
+                                IconButton(onClick = { finish() }) { // Back button
+                                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                                }
+                            }
+                        )
+                    }
+                ) { innerPadding ->
+                    MortgageCalculatorScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -473,82 +490,201 @@ class MortgageCalculatorActivity : ComponentActivity() {
 }
 
 @Composable
-fun MortgageCalculatorScreen() {
+fun MortgageCalculatorScreen(modifier: Modifier = Modifier) {
     var loanAmount by remember { mutableStateOf("") }
     var downPayment by remember { mutableStateOf("") }
     var interestRate by remember { mutableStateOf("") }
     var loanTerm by remember { mutableStateOf("") }
     var monthlyPayment by remember { mutableStateOf(0.0) }
 
+    // Error states
+    var loanAmountError by remember { mutableStateOf(false) }
+    var downPaymentError by remember { mutableStateOf(false) }
+    var interestRateError by remember { mutableStateOf(false) }
+    var loanTermError by remember { mutableStateOf(false) }
+
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) { Text(
             text = "Mortgage Calculator",
-            fontSize = 24.sp,
+            color = Color(0xFF006400),
+            fontFamily = FontFamily.Cursive,
+            fontSize = 30.sp,
             modifier = Modifier.padding(bottom = 16.dp)
         )
+            // Input: Loan Amount
+            OutlinedTextField(
+                value = loanAmount,
+                onValueChange = {
+                    loanAmount = it
+                    loanAmountError = !isValidPositiveNumber(it)
+                },
+                label = { Text("Enter Loan Amount") },
+                isError = loanAmountError,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (loanAmountError) {
+                Text(
+                    text = "Please enter a valid positive number",
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
 
-        OutlinedTextField(
-            value = loanAmount,
-            onValueChange = { loanAmount = it },
-            label = { Text("Enter Loan Amount") },
-            modifier = Modifier.fillMaxWidth()
-        )
+            // Input: Down Payment
+            OutlinedTextField(
+                value = downPayment,
+                onValueChange = {
+                    downPayment = it
+                    downPaymentError = !isValidPositiveNumber(it)
+                },
+                label = { Text("Enter Down Payment") },
+                isError = downPaymentError,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (downPaymentError) {
+                Text(
+                    text = "Please enter a valid positive number",
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            // Input: Interest Rate
+            OutlinedTextField(
+                value = interestRate,
+                onValueChange = {
+                    interestRate = it
+                    interestRateError = !isValidPositiveNumber(it)
+                },
+                label = { Text("Enter Annual Interest Rate (%)") },
+                isError = interestRateError,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (interestRateError) {
+                Text(
+                    text = "Please enter a valid positive number",
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
 
-        OutlinedTextField(
-            value = downPayment,
-            onValueChange = { downPayment = it },
-            label = { Text("Enter Down Payment") },
-            modifier = Modifier.fillMaxWidth()
-        )
+            // Input: Loan Term
+            OutlinedTextField(
+                value = loanTerm,
+                onValueChange = {
+                    loanTerm = it
+                    loanTermError = !isValidPositiveNumber(it)
+                },
+                label = { Text("Enter Loan Term (Years)") },
+                isError = loanTermError,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (loanTermError) {
+                Text(
+                    text = "Please enter a valid positive number",
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            // Calculate Button
+            Button(
+                onClick = {
+                    if (!loanAmountError && !downPaymentError && !interestRateError && !loanTermError) {
+                        val principal = (loanAmount.toDoubleOrNull() ?: 0.0) - (downPayment.toDoubleOrNull() ?: 0.0)
+                        val annualRate = (interestRate.toDoubleOrNull() ?: 0.0) / 100
+                        val monthlyRate = annualRate / 12
+                        val months = (loanTerm.toDoubleOrNull() ?: 0.0) * 12
+                        monthlyPayment = if (monthlyRate > 0) {
+                            (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1)
+                        } else {
+                            principal / months
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+                    .padding(top =20.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF4CAF50), // Green button
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Calculate", fontSize = 18.sp)
+            }
 
-        OutlinedTextField(
-            value = interestRate,
-            onValueChange = { interestRate = it },
-            label = { Text("Enter Annual Interest Rate (%)") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = loanTerm,
-            onValueChange = { loanTerm = it },
-            label = { Text("Enter Loan Term (Years)") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                val principal = (loanAmount.toDoubleOrNull() ?: 0.0) - (downPayment.toDoubleOrNull() ?: 0.0)
-                val annualRate = (interestRate.toDoubleOrNull() ?: 0.0) / 100
-                val monthlyRate = annualRate / 12
-                val months = (loanTerm.toDoubleOrNull() ?: 0.0) * 12
-                monthlyPayment = if (monthlyRate > 0) {
-                    (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1)
-                } else {
-                    principal / months
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Calculate")
+            // Results Section
+            if (monthlyPayment > 0) {
+                ResultsCard(label = "Monthly Payment", value = monthlyPayment)
+            }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(text = "Monthly Payment: $${"%.2f".format(monthlyPayment)}")
+        // App Logo at the Bottom
+        Image(
+            painter = painterResource(id = R.drawable.icon), // Replace with your logo resource
+            contentDescription = "App Logo",
+            modifier = Modifier
+                .size(100.dp)
+                .padding(bottom = 16.dp)
+        )
     }
 }
+
+// Helper Function for Validation
+fun isValidPositiveNumber(input: String): Boolean {
+    return input.isEmpty() || input.toDoubleOrNull()?.let { it > 0 } == true
+}
+
+@Composable
+fun ResultsCard(label: String, value: Double) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF4CAF50)
+                ),
+                fontSize = 18.sp
+            )
+            Text(
+                text = "$${"%.2f".format(value)}",
+                fontSize = 16.sp,
+                color = Color.Black
+            )
+        }
+    }
+}
+
 
 // Currency Converter Activity
 class CurrencyConverterActivity : ComponentActivity() {
