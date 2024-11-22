@@ -178,7 +178,7 @@ fun TipCalculatorScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) { Text(
-        text = "Tip Calculator",
+        text = "Quick Tips Made Easy",
         color = Color(0xFF006400),
         fontFamily = FontFamily.Cursive,
         fontSize = 30.sp,
@@ -517,7 +517,7 @@ fun MortgageCalculatorScreen(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) { Text(
-            text = "Mortgage Calculator",
+            text = "Unlock Your Mortgage Potential",
             color = Color(0xFF006400),
             fontFamily = FontFamily.Cursive,
             fontSize = 30.sp,
@@ -789,15 +789,26 @@ fun DropdownMenu(selectedItem: String, items: List<String>, onItemSelected: (Str
         }
     }
 }
-// Investment Return Calculator Activity
-class InvestmentReturnCalculatorActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
+@OptIn(ExperimentalMaterial3Api::class)
+class InvestmentReturnCalculatorActivity : ComponentActivity() { // Renamed class
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             RSSReaderTheme {
-                Scaffold {
-                    InvestmentReturnCalculatorScreen()
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text("Investment Calculator") },
+                            navigationIcon = {
+                                IconButton(onClick = { finish() }) { // Back button
+                                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                                }
+                            }
+                        )
+                    }
+                ) { innerPadding ->
+                    InvestmentScreen(modifier = Modifier.padding(innerPadding)) // Renamed function
                 }
             }
         }
@@ -805,76 +816,215 @@ class InvestmentReturnCalculatorActivity : ComponentActivity() {
 }
 
 @Composable
-fun InvestmentReturnCalculatorScreen() {
+fun InvestmentScreen(modifier: Modifier = Modifier) { // Renamed function
     var initialInvestment by remember { mutableStateOf("") }
     var annualReturnRate by remember { mutableStateOf("") }
     var investmentDuration by remember { mutableStateOf("") }
     var futureValue by remember { mutableStateOf(0.0) }
+    var impressiveGrowthMessage by remember { mutableStateOf("") }
+
+    // Error states
+    var initialInvestmentError by remember { mutableStateOf(false) }
+    var annualReturnRateError by remember { mutableStateOf(false) }
+    var investmentDurationError by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Investment Return Calculator",
-            fontSize = 24.sp,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        OutlinedTextField(
-            value = initialInvestment,
-            onValueChange = { initialInvestment = it },
-            label = { Text("Enter Initial Investment") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = annualReturnRate,
-            onValueChange = { annualReturnRate = it },
-            label = { Text("Enter Annual Return Rate (%)") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = investmentDuration,
-            onValueChange = { investmentDuration = it },
-            label = { Text("Enter Investment Duration (Years)") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                val principal = initialInvestment.toDoubleOrNull() ?: 0.0
-                val rate = (annualReturnRate.toDoubleOrNull() ?: 0.0) / 100
-                val time = investmentDuration.toDoubleOrNull() ?: 0.0
-                futureValue = principal * Math.pow(1 + rate, time)
-            },
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Calculate")
+            // Header
+            Text(
+                text = "Forecast Your Financial Growth",
+                color = Color(0xFF006400),
+                fontFamily = FontFamily.Cursive,
+                fontSize = 30.sp,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            // Input: Initial Investment
+            OutlinedTextField(
+                value = initialInvestment,
+                onValueChange = {
+                    initialInvestment = it
+                    initialInvestmentError = !isaValidPositiveInput(it) // Renamed validation function
+                },
+                label = { Text("Enter Initial Investment") },
+                isError = initialInvestmentError,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (initialInvestmentError) {
+                Text(
+                    text = "Please enter a valid positive number",
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
+
+            // Input: Annual Return Rate
+            OutlinedTextField(
+                value = annualReturnRate,
+                onValueChange = {
+                    annualReturnRate = it
+                    annualReturnRateError = !isaValidPositiveInput(it) // Renamed validation function
+                },
+                label = { Text("Enter Annual Return Rate (%)") },
+                isError = annualReturnRateError,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (annualReturnRateError) {
+                Text(
+                    text = "Please enter a valid positive number",
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
+
+            // Input: Investment Duration
+            OutlinedTextField(
+                value = investmentDuration,
+                onValueChange = {
+                    investmentDuration = it
+                    investmentDurationError = !isaValidPositiveInput(it) // Renamed validation function
+                },
+                label = { Text("Enter Investment Duration (Years)") },
+                isError = investmentDurationError,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (investmentDurationError) {
+                Text(
+                    text = "Please enter a valid positive number",
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
+
+            // Calculate Button
+            Button(
+                onClick = {
+                    if (!initialInvestmentError && !annualReturnRateError && !investmentDurationError) {
+                        val principal = initialInvestment.toDoubleOrNull() ?: 0.0
+                        val rate = (annualReturnRate.toDoubleOrNull() ?: 0.0) / 100
+                        val time = investmentDuration.toDoubleOrNull() ?: 0.0
+                        futureValue = principal * Math.pow(1 + rate, time)
+
+                        // Display message if growth rate exceeds 10% of initial investment
+                        impressiveGrowthMessage = if (rate > 0.1) {
+                            "Impressive growth rate—you're making your money work hard!"
+                        } else {
+                            ""
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .padding(top = 20.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF4CAF50), // Green button
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Calculate", fontSize = 18.sp)
+            }
+
+            // Impressive Growth Message
+            if (impressiveGrowthMessage.isNotEmpty()) {
+                Text(
+                    text = impressiveGrowthMessage,
+                    color = Color.Green,
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+
+            // Results Section
+            if (futureValue > 0) {
+                InvestmentResultsCard(label = "Future Value", value = futureValue) // Renamed function
+            }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(text = "Future Value: $${"%.2f".format(futureValue)}")
+        // App Logo at the Bottom
+        Image(
+            painter = painterResource(id = R.drawable.icon), // Replace with your logo resource
+            contentDescription = "App Logo",
+            modifier = Modifier
+                .size(100.dp)
+                .padding(bottom = 16.dp)
+        )
     }
 }
-// Discount Calculator Activity
-class DiscountCalculatorActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
+// Helper Function for Validation
+fun isaValidPositiveInput(input: String): Boolean { // Renamed function
+    return input.isEmpty() || input.toDoubleOrNull()?.let { it > 0 } == true
+}
+
+@Composable
+fun InvestmentResultsCard(label: String, value: Double) { // Renamed function
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF4CAF50)
+                ),
+                fontSize = 18.sp
+            )
+            Text(
+                text = "$${"%.2f".format(value)}",
+                fontSize = 16.sp,
+                color = Color.Black
+            )
+        }
+    }
+}
+
+//Discount Calculator Activity
+@OptIn(ExperimentalMaterial3Api::class)
+class DiscountCalculatorActivity : ComponentActivity() { // Renamed class
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             RSSReaderTheme {
-                Scaffold {
-                    DiscountCalculatorScreen()
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text("Discount Calculator") },
+                            navigationIcon = {
+                                IconButton(onClick = { finish() }) { // Back button
+                                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                                }
+                            }
+                        )
+                    }
+                ) { innerPadding ->
+                    DiscountScreen(modifier = Modifier.padding(innerPadding)) // Renamed function
                 }
             }
         }
@@ -882,58 +1032,170 @@ class DiscountCalculatorActivity : ComponentActivity() {
 }
 
 @Composable
-fun DiscountCalculatorScreen() {
+fun DiscountScreen(modifier: Modifier = Modifier) { // Renamed function
     var originalPrice by remember { mutableStateOf("") }
     var discountPercentage by remember { mutableStateOf("") }
     var discountAmount by remember { mutableStateOf(0.0) }
     var finalPrice by remember { mutableStateOf(0.0) }
+    var bigSavingsMessage by remember { mutableStateOf("") }
+
+    // Error states
+    var originalPriceError by remember { mutableStateOf(false) }
+    var discountPercentageError by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Discount Calculator",
-            fontSize = 24.sp,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        OutlinedTextField(
-            value = originalPrice,
-            onValueChange = { originalPrice = it },
-            label = { Text("Enter Original Price") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = discountPercentage,
-            onValueChange = { discountPercentage = it },
-            label = { Text("Enter Discount Percentage") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                val price = originalPrice.toDoubleOrNull() ?: 0.0
-                val discount = discountPercentage.toDoubleOrNull() ?: 0.0
-                discountAmount = price * (discount / 100)
-                finalPrice = price - discountAmount
-            },
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Calculate")
+            // Phrase Header
+            Text(
+                text = "Calculate Your Discounts Instantly",
+                color = Color(0xFF006400),
+                fontFamily = FontFamily.Cursive,
+                fontSize = 27.sp,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            // Input: Original Price
+            OutlinedTextField(
+                value = originalPrice,
+                onValueChange = {
+                    originalPrice = it
+                    originalPriceError = !isValidPositiveInput(it) // Renamed validation function
+                },
+                label = { Text("Enter Original Price") },
+                isError = originalPriceError,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (originalPriceError) {
+                Text(
+                    text = "Please enter a valid positive number",
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
+
+            // Input: Discount Percentage
+            OutlinedTextField(
+                value = discountPercentage,
+                onValueChange = {
+                    discountPercentage = it
+                    discountPercentageError = !isValidPositiveInput(it) // Renamed validation function
+                },
+                label = { Text("Enter Discount Percentage") },
+                isError = discountPercentageError,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (discountPercentageError) {
+                Text(
+                    text = "Please enter a valid positive number",
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
+
+            // Calculate Button
+            Button(
+                onClick = {
+                    if (!originalPriceError && !discountPercentageError) {
+                        val price = originalPrice.toDoubleOrNull() ?: 0.0
+                        val discount = discountPercentage.toDoubleOrNull() ?: 0.0
+                        discountAmount = price * (discount / 100)
+                        finalPrice = price - discountAmount
+
+                        bigSavingsMessage = if (discount >= 50) {
+                            "Wow, you're saving big!"
+                        } else {
+                            ""
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF4CAF50), // Green button
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Calculate", fontSize = 18.sp)
+            }
+
+            // Big Savings Message
+            if (bigSavingsMessage.isNotEmpty()) {
+                Text(
+                    text = bigSavingsMessage,
+                    color = Color.Green,
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+
+            // Results Section
+            if (discountAmount > 0 || finalPrice > 0) {
+                DiscountResultsCard(label = "Discount Amount", value = discountAmount) // Renamed function
+                DiscountResultsCard(label = "Final Price", value = finalPrice) // Renamed function
+            }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        // App Logo at the Bottom
+        Image(
+            painter = painterResource(id = R.drawable.icon), // Replace with your logo resource
+            contentDescription = "App Logo",
+            modifier = Modifier
+                .size(100.dp)
+                .padding(bottom = 16.dp)
+        )
+    }
+}
 
-        Text(text = "Discount Amount: $${"%.2f".format(discountAmount)}")
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Final Price: $${"%.2f".format(finalPrice)}")
+// Helper Function for Validation
+fun isValidPositiveInput(input: String): Boolean { // Renamed function
+    return input.isEmpty() || input.toDoubleOrNull()?.let { it > 0 } == true
+}
+
+@Composable
+fun DiscountResultsCard(label: String, value: Double) { // Renamed function
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF4CAF50)
+                ),
+                fontSize = 18.sp
+            )
+            Text(
+                text = "$${"%.2f".format(value)}",
+                fontSize = 16.sp,
+                color = Color.Black
+            )
+        }
     }
 }
 
