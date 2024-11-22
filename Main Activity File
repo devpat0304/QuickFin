@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                             fontSize = 32.sp,
                             color = Color.Green,
                             fontFamily = FontFamily.Serif,
-                                    // Use Serif font
+                            // Use Serif font
                             fontWeight = FontWeight.Bold, // Make it bold
                             modifier = Modifier
                                 .padding(0.5.dp)
@@ -1200,15 +1200,26 @@ fun DiscountResultsCard(label: String, value: Double) { // Renamed function
 }
 
 
-
 class SavingsAdvisorActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             RSSReaderTheme {
-                Scaffold {
-                    SavingsAdvisorScreen()
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text("Savings Advisor") },
+                            navigationIcon = {
+                                IconButton(onClick = { finish() }) { // Back button
+                                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                                }
+                            }
+                        )
+                    }
+                ) { innerPadding ->
+                    SavingsAdvisorScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -1216,65 +1227,99 @@ class SavingsAdvisorActivity : ComponentActivity() {
 }
 
 @Composable
-fun SavingsAdvisorScreen() {
+fun SavingsAdvisorScreen(modifier: Modifier = Modifier) {
     var monthlyIncome by remember { mutableStateOf("") }
     var monthlyExpenses by remember { mutableStateOf("") }
     var targetSavings by remember { mutableStateOf("") }
     var monthlySavingsGoal by remember { mutableStateOf(0.0) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Savings Advisor",
-            fontSize = 24.sp,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        OutlinedTextField(
-            value = monthlyIncome,
-            onValueChange = { monthlyIncome = it },
-            label = { Text("Enter Monthly Income") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = monthlyExpenses,
-            onValueChange = { monthlyExpenses = it },
-            label = { Text("Enter Monthly Expenses") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = targetSavings,
-            onValueChange = { targetSavings = it },
-            label = { Text("Enter Target Savings Amount") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                val income = monthlyIncome.toDoubleOrNull() ?: 0.0
-                val expenses = monthlyExpenses.toDoubleOrNull() ?: 0.0
-                val savings = targetSavings.toDoubleOrNull() ?: 0.0
-                monthlySavingsGoal = income - expenses - savings
-            },
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Calculate")
+            // Title
+            Text(
+                text = "Plan Your Savings Smartly",
+                fontSize = 30.sp,
+                color = Color(0xFF006400),
+                fontFamily = FontFamily.Cursive,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            // Input: Monthly Income
+            OutlinedTextField(
+                value = monthlyIncome,
+                onValueChange = { monthlyIncome = it },
+                label = { Text("Enter Monthly Income") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            // Input: Monthly Expenses
+            OutlinedTextField(
+                value = monthlyExpenses,
+                onValueChange = { monthlyExpenses = it },
+                label = { Text("Enter Monthly Expenses") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            // Input: Target Savings
+            OutlinedTextField(
+                value = targetSavings,
+                onValueChange = { targetSavings = it },
+                label = { Text("Enter Target Savings Amount") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            // Calculate Button
+            Button(
+                onClick = {
+                    val income = monthlyIncome.toDoubleOrNull() ?: 0.0
+                    val expenses = monthlyExpenses.toDoubleOrNull() ?: 0.0
+                    val savings = targetSavings.toDoubleOrNull() ?: 0.0
+                    monthlySavingsGoal = income - expenses - savings
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF4CAF50), // Green button
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Calculate", fontSize = 18.sp)
+            }
+
+            // Results Card
+            if (monthlySavingsGoal != 0.0) {
+                ResultsCard(
+                    label = "Monthly Savings Goal",
+                    value = monthlySavingsGoal
+                )
+            }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(text = "Monthly Savings Goal: $${"%.2f".format(monthlySavingsGoal)}")
+        // App Logo at the Bottom
+        Image(
+            painter = painterResource(id = R.drawable.icon), // Replace "icon" with your actual drawable name
+            contentDescription = "App Logo",
+            modifier = Modifier
+                .size(100.dp)
+                .padding(bottom = 16.dp)
+        )
     }
-
 }
+
+
+
+
+
