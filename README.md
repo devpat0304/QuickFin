@@ -26,9 +26,7 @@ Designed following **Agile methodology** in three iterative development cycles, 
 - ✅ Includes unit and instrumented tests using `JUnit` and Android Test framework
 
 ---
----
----
----
+
 
 ## 📊 Financial Calculators Breakdown
 
@@ -149,7 +147,6 @@ Helps users determine how much to save monthly to meet a future financial goal.
 - ⚙️ Kotlin-based Gradle configuration and dependency management
 - 🔁 Agile development practices (iterative planning, UML diagrams, and traceability)
 
----
 
 Even as a mobile app, **QuickFin** captures the educational intent of classical desktop applications by exposing students to **end-to-end application development** — from UI prototyping and Java logic to test automation and Gradle build systems — all in the context of practical, everyday financial decision-making 💰.
 
@@ -253,7 +250,7 @@ The application should launch on the selected device, allowing you to explore al
 
 # 📚 QuickFin Documentation
 
-This section summarizes formal documentation from the **CSE 3310: Fundamentals of Software Engineering** course iteration reports and final presentations. It includes diagrams, use cases, requirement traceability, and team insights developed throughout the semester.
+This section summarizes formal documentation from the Final Report and Presentation. It includes diagrams, use cases, requirement traceability, and team insights developed throughout the semester.
 
 ---
 
