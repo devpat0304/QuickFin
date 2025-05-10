@@ -1,6 +1,5 @@
 # 💸 QuickFin
-
-
+ <img src="QuickFinLogo.png" alt="QuickFin Logo" width="300"/>
 An **interactive Android-based financial calculator app** built using **Java** and **Koitlin** on Android Studio. This project was developed as part of **CSE 3310: Fundamentals of Software Engineering** at **The University of Texas at Arlington** 🎓 by Group 6: *Money Masters*.
 
 The **QuickFin** application helps users make fast, informed financial decisions by offering six real-world calculators within a single mobile interface. From tipping at a restaurant to estimating mortgage payments, QuickFin empowers users with accurate, on-demand tools that are neatly categorized, easy to navigate, and visually cohesive across devices.
