@@ -393,8 +393,6 @@ Diagram mapping users, calculators, and financial logic — available in final r
 - **Analysis Sequence Diagrams:** Investment Return, Savings Advisor  
 - **Design Class Diagram:** Illustrates structure and relationships
 
-> 📺 [Watch the full app demo on YouTube](https://youtu.be/_DCBa3raniM)
-
 </details>
 
 
