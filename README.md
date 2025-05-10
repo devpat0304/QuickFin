@@ -26,6 +26,9 @@ Designed following **Agile methodology** in three iterative development cycles, 
 - ✅ Includes unit and instrumented tests using `JUnit` and Android Test framework
 
 ---
+---
+---
+---
 
 ## 📊 Financial Calculators Breakdown
 
