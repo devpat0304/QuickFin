@@ -27,6 +27,116 @@ Designed following **Agile methodology** in three iterative development cycles, 
 
 ---
 
+## 📊 Financial Calculators Breakdown
+
+QuickFin includes six practical financial tools, each designed to address specific day-to-day financial needs. Click on each calculator below to view its purpose, inputs, and expected output.
+
+<details>
+  <summary>💸 Tip Calculator</summary>
+
+**Purpose:**  
+Helps users calculate a fair tip based on their bill and preferred tip percentage. Useful for dining out, group meals, or splitting bills.
+
+**Inputs:**
+- Total bill amount
+- Tip percentage (e.g., 15%, 18%, 20%)
+- Number of people splitting the bill
+
+**Outputs:**
+- Total tip amount
+- Tip per person
+- Final bill total including tip
+- Amount owed per person
+
+</details>
+
+<details>
+  <summary>🏡 Mortgage Calculator</summary>
+
+**Purpose:**  
+Estimates a user's monthly mortgage payment, giving insight into long-term home loan affordability.
+
+**Inputs:**
+- Principal loan amount
+- Annual interest rate
+- Loan term (in years)
+
+**Outputs:**
+- Monthly mortgage payment
+- Total amount paid over the loan period
+- Total interest paid
+
+</details>
+
+<details>
+  <summary>💱 Currency Converter</summary>
+
+**Purpose:**  
+Converts a specified amount from one currency to another based on a pre-set or real-time exchange rate.
+
+**Inputs:**
+- Source currency (e.g., USD)
+- Target currency (e.g., EUR)
+- Amount to convert
+
+**Outputs:**
+- Converted amount in the target currency
+- Conversion rate used (static or real-time)
+
+</details>
+
+<details>
+  <summary>🏷️ Discount Calculator</summary>
+
+**Purpose:**  
+Calculates final price after applying a discount — helpful for shopping deals, sales, and budgeting.
+
+**Inputs:**
+- Original price of item
+- Discount percentage
+
+**Outputs:**
+- Discount amount
+- Final price after discount
+- Total savings
+
+</details>
+
+<details>
+  <summary>📈 Investment Return Calculator</summary>
+
+**Purpose:**  
+Estimates the future value of an investment using interest compounding over time.
+
+**Inputs:**
+- Initial investment amount (principal)
+- Annual interest rate (percentage)
+- Investment duration (in years)
+
+**Outputs:**
+- Total future value of the investment
+- Interest earned over the period
+
+</details>
+
+<details>
+  <summary>🏦 Savings Advisor</summary>
+
+**Purpose:**  
+Helps users determine how much to save monthly to meet a future financial goal.
+
+**Inputs:**
+- Savings goal (target amount)
+- Timeframe (months)
+- Optional starting amount
+
+**Outputs:**
+- Monthly savings needed to reach goal
+- Optional projection with existing savings included
+
+</details>
+
+
 ## 📚 This Project Demonstrates:
 
 - 🧱 Component-based screen architecture using Compose functions
