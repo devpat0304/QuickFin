@@ -153,6 +153,7 @@ Even as a mobile app, **QuickFin** captures the educational intent of classical 
 ---
 
 
+
 ## 📂 Project Structure
 
 The QuickFin project is organized into a modular Android project with the following core components:
@@ -225,25 +226,28 @@ Once inside Android Studio:
 
 ---
 
-## 🛠️ Technologies Used
+## 🧰 QuickFin Tech Stack
 
-QuickFin was developed using modern Android technologies and best practices to ensure performance, modularity, and scalability.
-
-| Category              | Tools / Technologies                               |
-|-----------------------|----------------------------------------------------|
-| 👨‍💻 Programming       | Java, Kotlin                                        |
-| 📱 Mobile Platform    | Android (SDK 33+), Android Studio                  |
-| 🎨 UI Framework       | Jetpack Compose, Material Design 3 (Material You)  |
-| ⚙️ Build Tools        | Gradle (Kotlin DSL), ProGuard                      |
-| 🧪 Testing Frameworks | JUnit, Android Instrumentation (Espresso)          |
-| 📦 Dependency Mgmt    | Gradle Wrapper, libs.versions.toml                 |
-
+### 💻 Languages
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)
-![Android](https://img.shields.io/badge/android-%233DDC84.svg?style=for-the-badge&logo=android&logoColor=white)
-![Gradle](https://img.shields.io/badge/gradle-%2302303A.svg?style=for-the-badge&logo=gradle&logoColor=white)
-![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpack-compose&logoColor=white)
-![JUnit](https://img.shields.io/badge/junit-%2325A162.svg?style=for-the-badge&logo=junit5&logoColor=white)
+
+### 🧪 Tools & Frameworks
+![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84.svg?style=for-the-badge&logo=android-studio&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)
+![Material Design](https://img.shields.io/badge/Material%20Design-757575.svg?style=for-the-badge&logo=materialdesign&logoColor=white)
+![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white)
+
+### 🗃️ Databases & Persistence
+![JUnit](https://img.shields.io/badge/JUnit-25A162.svg?style=for-the-badge&logo=junit5&logoColor=white)
+*QuickFin does not use a persistent database, but it includes local testing frameworks.*
+
+### 📚 Libraries
+![AndroidX](https://img.shields.io/badge/AndroidX-%23000000.svg?style=for-the-badge&logo=android&logoColor=white)
+
+### 🧠 Methodologies
+![Agile](https://img.shields.io/badge/Agile-%2300BFA5.svg?style=for-the-badge&logo=agile&logoColor=white)
+![Scrum](https://img.shields.io/badge/Scrum-%235C4EE5.svg?style=for-the-badge&logo=scrumalliance&logoColor=white)
 
 
 The application should launch on the selected device, allowing you to explore all built-in financial tools from the main menu.
