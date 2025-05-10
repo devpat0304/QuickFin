@@ -406,6 +406,43 @@ Experience QuickFin in action! Watch our full demonstration, showcasing all six 
 🔗 [Click here to watch on YouTube](https://youtu.be/_DCBa3raniM)
 
 > This video walkthrough was part of our final presentation for our project - CSE 3310 at The University of Texas at Arlington. It demonstrates the app’s UI, functionality, and real-time usage across various financial tools.
+> 
+---
+## 🎯 Learning Objectives
+
+This project was designed to reinforce core Android and software engineering skills, specifically:
+
+- 🔧 Android app development using Kotlin and Java
+- 🧱 Modular software design with reusable components
+- 📲 UI development with Jetpack Compose and Material Design 3
+- 🔁 Agile workflows: planning, iteration, and retrospectives
+- 🧪 Test-driven development using JUnit and Android instrumentation
+- ⚙️ Gradle Kotlin DSL for modern build configuration
+- 🔍 Requirement analysis, UML modeling, and traceability
+
+---
+
+## 🚀 Future Enhancements
+
+Here are potential features we would love to implement in future iterations of QuickFin:
+
+- 📊 Persistent history and calculator logs using Room database or file I/O
+- 🌐 Live currency exchange rates via API integration
+- 🎨 Dark mode and accessibility customization
+- 🌎 Multilingual support (Spanish, French, etc.)
+- 🧾 Export receipts or calculation summaries to PDF or shareable formats
+- 🔒 User login for saving preferences and goals
+
+---
+
+## 🙏 Thank You
+
+Thank you for taking the time to explore **QuickFin**!  
+We hope you find the app educational, inspiring, or useful in your personal finance journey.
+
+Feel free to ⭐ star, fork, or contribute to this project.  
+Happy coding! 💻✨
+
 
 
 
