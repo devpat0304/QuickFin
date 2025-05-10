@@ -248,3 +248,153 @@ QuickFin was developed using modern Android technologies and best practices to e
 
 The application should launch on the selected device, allowing you to explore all built-in financial tools from the main menu.
 
+# 📚 QuickFin Documentation
+
+This section summarizes formal documentation from the **CSE 3310: Fundamentals of Software Engineering** course iteration reports and final presentations. It includes diagrams, use cases, requirement traceability, and team insights developed throughout the semester.
+
+---
+
+## 📌 Project Summary
+
+QuickFin is a mobile financial toolkit designed to help users quickly and accurately perform everyday financial calculations.
+
+It includes tools for:
+- Tipping at restaurants
+- Estimating mortgage payments
+- Converting currencies
+- Calculating investment growth
+- Applying discounts
+- Advising on savings strategy
+
+The app was developed by **Group 6: Money Masters** using Agile methodology over 3 iterations, covering all phases of the software development lifecycle.
+
+---
+
+## 📋 Requirements and Use Cases
+
+<details>
+<summary><strong>✅ Functional Requirements</strong></summary>
+
+| ID  | Requirement Description                                                                 |
+|-----|------------------------------------------------------------------------------------------|
+| R1  | View the home menu with all financial calculator options                                |
+| R2  | Calculate tip amount with total bill                                                     |
+| R3  | Calculate monthly mortgage payments                                                      |
+| R4  | Convert between two currencies                                                           |
+| R5  | Calculate future investment value using compound interest                               |
+| R6  | Determine final price after discount                                                     |
+| R7  | Receive personalized savings advice based on income and expenses                        |
+
+</details>
+
+<details>
+<summary><strong>📌 Use Case Summary</strong></summary>
+
+Each calculator corresponds to a specific use case (UC):
+
+- **UC1:** Home Menu Navigation  
+- **UC2:** Tip Calculator  
+- **UC3:** Mortgage Calculator  
+- **UC4:** Currency Converter  
+- **UC5:** Investment Return  
+- **UC6:** Discount Calculator  
+- **UC7:** Savings Advisor  
+
+</details>
+
+<details>
+<summary><strong>📈 Increment Planning</strong></summary>
+
+| Use Case | Assigned To          | Iteration(s) | Effort (Person-Weeks) |
+|----------|----------------------|--------------|------------------------|
+| UC1      | Dev Patel            | 2            | 2                      |
+| UC2      | Yahia Elsaad         | 1, 2         | 2                      |
+| UC3      | Jeffery, Ore         | 1, 2, 3      | 3                      |
+| UC4      | Ore, Dev             | 1, 2         | 2                      |
+| UC5      | Mohamad, Yahia       | 1, 2         | 3                      |
+| UC6      | Mohamad              | 2            | 2                      |
+| UC7      | Mohamad, Dev, Yahia  | 2            | 2                      |
+
+</details>
+
+---
+
+## 🔄 Expanded Use Cases
+
+<details>
+<summary><strong>💸 EUC2: Tip Calculator</strong></summary>
+
+- Input: Bill amount and tip %
+- Output: Tip amount, total cost, per-person split
+- Non-trivial logic: Input validation, tip presets, custom tip handling
+
+</details>
+
+<details>
+<summary><strong>🏡 EUC3: Mortgage Calculator</strong></summary>
+
+- Input: Loan amount, down payment, APR, term
+- Output: Monthly payment, total paid, total interest
+- Non-trivial logic: Validating down payment < loan, using amortization formula
+
+</details>
+
+<details>
+<summary><strong>💱 EUC4: Currency Converter</strong></summary>
+
+- Input: Source currency, target currency, amount
+- Output: Converted value
+- Non-trivial logic: Apply real-time exchange rate (static in demo)
+
+</details>
+
+<details>
+<summary><strong>📈 EUC5: Investment Return</strong></summary>
+
+- Input: Principal, interest rate, duration
+- Output: Future value
+- Formula: Compound interest
+
+</details>
+
+<details>
+<summary><strong>🏷️ EUC6: Discount Calculator</strong></summary>
+
+- Input: Original price, discount %
+- Output: Final price, savings
+- Logic: Validate price/percentage
+
+</details>
+
+<details>
+<summary><strong>🏦 EUC7: Savings Advisor</strong></summary>
+
+- Input: Monthly income, savings goal, list of expenses
+- Output: Recommendation message if savings target is met
+- Non-trivial logic: Expense summation, delta analysis with savings goal
+
+</details>
+
+---
+
+## 📊 Diagrams and Visuals
+
+<details>
+<summary><strong>🧠 Domain Model Diagram</strong></summary>
+
+Diagram mapping users, calculators, and financial logic — available in final report PDF.
+
+</details>
+
+<details>
+<summary><strong>🔁 Sequence & Class Diagrams</strong></summary>
+
+- **Design Sequence Diagrams:** Tip, Mortgage, Currency Converter  
+- **Analysis Sequence Diagrams:** Investment Return, Savings Advisor  
+- **Design Class Diagram:** Illustrates structure and relationships
+
+> 📺 [Watch the full app demo on YouTube](https://youtu.be/_DCBa3raniM)
+
+</details>
+
+
