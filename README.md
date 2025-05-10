@@ -1,6 +1,6 @@
 # 💸 QuickFin
 
-![QuickFin Logo](ic_launcher-playstore.png)
+<img src="ic_launcher-playstore.png" alt="QuickFin Logo" width="300"/>
 
 An **interactive Android-based financial calculator app** built using **Java**, **Jetpack Compose**, and **Material Design 3 (Material You)**. This project was developed as part of **CSE 3310: Software Engineering** at **The University of Texas at Arlington** 🎓 by Group 6: *Money Masters*.
 
