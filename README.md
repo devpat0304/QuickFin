@@ -405,7 +405,7 @@ Experience QuickFin in action! Watch our full demonstration, showcasing all six 
 
 🔗 [Click here to watch on YouTube](https://youtu.be/_DCBa3raniM)
 
-> This video walkthrough was part of our final presentation for CSE 3310 at The University of Texas at Arlington. It demonstrates the app’s UI, functionality, and real-time usage across various financial tools.
+> This video walkthrough was part of our final presentation for our project - CSE 3310 at The University of Texas at Arlington. It demonstrates the app’s UI, functionality, and real-time usage across various financial tools.
 
 
 
