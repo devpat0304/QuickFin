@@ -395,4 +395,17 @@ Diagram mapping users, calculators, and financial logic — available in final r
 
 </details>
 
+---
+
+## 🎥 Demo Video
+
+Experience QuickFin in action! Watch our full demonstration, showcasing all six financial calculators and navigation features.
+
+[![QuickFin Demo](https://img.youtube.com/vi/_DCBa3raniM/0.jpg)](https://youtu.be/_DCBa3raniM)
+
+🔗 [Click here to watch on YouTube](https://youtu.be/_DCBa3raniM)
+
+> This video walkthrough was part of our final presentation for CSE 3310 at The University of Texas at Arlington. It demonstrates the app’s UI, functionality, and real-time usage across various financial tools.
+
+
 
