@@ -1,8 +1,7 @@
 # 💸 QuickFin
 
-![QuickFin Logo](./ic_launcher-playstore.png)
 
-An **interactive Android-based financial calculator app** built using **Java**, **Jetpack Compose**, and **Material Design 3 (Material You)**. This project was developed as part of **CSE 3310: Software Engineering** at **The University of Texas at Arlington** 🎓 by Group 6: *Money Masters*.
+An **interactive Android-based financial calculator app** built using **Java**, **Jetpack Compose**, and **Material Design 3 (Material You)**. This project was developed as part of **CSE 3310: Fundamentals of Software Engineering** at **The University of Texas at Arlington** 🎓 by Group 6: *Money Masters*.
 
 The **QuickFin** application helps users make fast, informed financial decisions by offering six real-world calculators within a single mobile interface. From tipping at a restaurant to estimating mortgage payments, QuickFin empowers users with accurate, on-demand tools that are neatly categorized, easy to navigate, and visually cohesive across devices.
 
@@ -40,3 +39,36 @@ Designed following **Agile methodology** in three iterative development cycles, 
 ---
 
 Even as a mobile app, **QuickFin** captures the educational intent of classical desktop applications by exposing students to **end-to-end application development** — from UI prototyping and Java logic to test automation and Gradle build systems — all in the context of practical, everyday financial decision-making 💰.
+
+---
+
+
+## 📂 Project Structure
+
+The QuickFin project is organized into a modular Android project with the following core components:
+
+QuickFin-main/
+├── RSSReader2/ # Main Android Studio project root
+│ ├── .idea/ # IntelliJ/Android Studio configuration files
+│ ├── app/ # Application module
+│ │ ├── src/
+│ │ │ ├── main/
+│ │ │ │ ├── java/com/example/rssreader/
+│ │ │ │ │ ├── MainActivity.kt
+│ │ │ │ │ ├── Color.kt, Theme.kt, Type.kt
+│ │ │ │ ├── res/
+│ │ │ │ │ ├── layout/, values/, drawable/, mipmap/
+│ │ │ │ └── AndroidManifest.xml
+│ │ ├── build.gradle.kts
+│ │ └── proguard-rules.pro
+│ ├── gradle/ # Gradle wrapper and config
+│ │ ├── wrapper/
+│ │ │ ├── gradle-wrapper.jar
+│ │ │ ├── gradle-wrapper.properties
+│ │ └── libs.versions.toml
+│ ├── build.gradle.kts
+│ ├── settings.gradle.kts
+└── README.md # This documentation file
+
+> 💡 Each calculator screen is implemented in its own `Activity` or `Composable`, allowing modular development and testing. Gradle Kotlin DSL enables more readable build configuration.
+"""
