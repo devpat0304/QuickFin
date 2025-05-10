@@ -47,28 +47,30 @@ Even as a mobile app, **QuickFin** captures the educational intent of classical 
 
 The QuickFin project is organized into a modular Android project with the following core components:
 
+```
 QuickFin-main/
 ├── RSSReader2/ # Main Android Studio project root
-│ ├── .idea/ # IntelliJ/Android Studio configuration files
-│ ├── app/ # Application module
-│ │ ├── src/
-│ │ │ ├── main/
-│ │ │ │ ├── java/com/example/rssreader/
-│ │ │ │ │ ├── MainActivity.kt
-│ │ │ │ │ ├── Color.kt, Theme.kt, Type.kt
-│ │ │ │ ├── res/
-│ │ │ │ │ ├── layout/, values/, drawable/, mipmap/
-│ │ │ │ └── AndroidManifest.xml
-│ │ ├── build.gradle.kts
-│ │ └── proguard-rules.pro
-│ ├── gradle/ # Gradle wrapper and config
-│ │ ├── wrapper/
-│ │ │ ├── gradle-wrapper.jar
-│ │ │ ├── gradle-wrapper.properties
-│ │ └── libs.versions.toml
-│ ├── build.gradle.kts
-│ ├── settings.gradle.kts
-└── README.md # This documentation file
+│   ├── .idea/ # IntelliJ/Android Studio configuration files
+│   ├── app/ # Application module
+│   │   ├── src/
+│   │   │   ├── main/
+│   │   │   │   ├── java/com/example/rssreader/
+│   │   │   │   │   ├── MainActivity.kt
+│   │   │   │   │   ├── Color.kt, Theme.kt, Type.kt
+│   │   │   │   ├── res/
+│   │   │   │   │   ├── layout/, values/, drawable/, mipmap/
+│   │   │   │   ├── AndroidManifest.xml
+│   │   ├── build.gradle.kts
+│   │   ├── proguard-rules.pro
+│   ├── gradle/ # Gradle wrapper and config
+│   │   ├── wrapper/
+│   │   │   ├── gradle-wrapper.jar
+│   │   │   ├── gradle-wrapper.properties
+│   │   ├── libs.versions.toml
+│   ├── build.gradle.kts
+│   ├── settings.gradle.kts
+│   └── README.md # This documentation file
+```
 
 > 💡 Each calculator screen is implemented in its own `Activity` or `Composable`, allowing modular development and testing. Gradle Kotlin DSL enables more readable build configuration.
 """
