@@ -74,3 +74,46 @@ QuickFin-main/
 
 > 💡 Each calculator screen is implemented in its own `Activity` or `Composable`, allowing modular development and testing. Gradle Kotlin DSL enables more readable build configuration.
 """
+> 
+
+## 🚀 Getting Started
+
+This section provides instructions for setting up the **QuickFin** Android application locally using Android Studio.
+
+### ✅ Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- 📦 **Android Studio** (Electric Eel or newer)
+- ☕ **Java Development Kit (JDK)** 17 or higher
+- 🟣 **Kotlin** 1.8+
+- ⚙️ **Gradle** 8.0+ (Handled automatically via Android Studio)
+- 📱 An Android emulator or physical device for testing
+
+---
+
+### 📥 Installation
+
+To clone the repository and open the project:
+
+```bash
+git clone https://github.com/your-username/QuickFin.git
+cd QuickFin-main/RSSReader2
+```
+
+Open the `RSSReader2` folder in **Android Studio** as a new project.
+
+---
+
+### ▶️ Build & Run
+
+Once inside Android Studio:
+
+1. Click **"Build > Make Project"** or press `Ctrl + F9` to compile the project.
+2. Connect an Android device or launch an emulator.
+3. Click the green **Run** arrow (`Shift + F10`) to deploy the app.
+
+---
+
+The application should launch on the selected device, allowing you to explore all built-in financial tools from the main menu.
+
